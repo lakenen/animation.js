@@ -1,9 +1,8 @@
-animation.js
-============
+# Animation.js
 
 A JavaScript animation library for easily creating complex, customizable animations.
 
-# How to use
+## How to use
 
 You can use Animation.Transform if you just want to animate properties on an object:
 ```js
@@ -35,7 +34,7 @@ var animation = new Animation.Transform(ball, {
 You can also extend Animation to animate anything you like! 
 For example, the following code creates an animation that will rotate and move an HTML element on a page:
 ```js
-// defining the new animation extension
+// defining the new animation class
 var MyAnimation = Animation.extend(function (elt, options) {
 	this._super(options);
 	var transform = getTransform(elt);
@@ -86,18 +85,17 @@ function getTransform(element) {
 	return splits;
 }
 
-
 // let's try it!
 var animation = new MyAnimation(document.getElementById('square'), {
 	x: 400,
 	y: 200,
-	a: 45 //degrees,
+	a: 45, //degrees
 	duration: 0.5
 });
 
 ```
 
-# Coming soon...
+## Coming soon...
 
 Tests and more examples!
 
