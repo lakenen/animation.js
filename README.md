@@ -99,6 +99,8 @@ var animation = new MyAnimation(document.getElementById('square'), {
 
 Tests and more examples!
 
+Oh... and I guess I'll post full API documentation too! :)
+
 ## License 
 
 (The MIT License)

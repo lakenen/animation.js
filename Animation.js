@@ -144,6 +144,10 @@ window.Animation = (function() {
 		transition.easeOut = transition;
 		return transition;
 	}
+	
+	function isFn(fn) {
+		return typeof fn === 'function';
+	}
 
 	var Animation = {
 		Transitions: {},
@@ -208,22 +212,29 @@ window.Animation = (function() {
 			transition: Animation.Transitions.Exponential
 		};
 		this.options = mergeObjects({}, defaultOptions, options || {});
-		var starts = (new Date()).getTime() + (this.options.delay * 1000);
-		var duration = this.options.duration * 1000;
-		var ends = starts + duration;
-		var currentFrame = 0;
-		var totalFrames = this.options.duration * this.options.fps;
-		var position = 0;
-		var self = this;
+		var starts = (new Date()).getTime() + (this.options.delay * 1000),
+			duration = this.options.duration * 1000,
+			ends = starts + duration,
+			currentFrame = 0,
+			totalFrames = this.options.duration * this.options.fps,
+			position = 0,
+			self = this,
+			onStartCalled = false;
+		
+		// defer adding it until this function returns
 		setTimeout(function () { add(self); }, 1);
 
 		return {
 			loop: function(time) {
 				if (time >= starts) {
+					if (!onStartCalled && isFn(this.options.onStart)) {
+						onStartCalled = true;
+						this.options.onStart();
+					}
 					if (time >= ends) {
 						this.render(1.0);
 						this.cancel();
-						if (typeof this.options.onFinish === 'function')
+						if (isFn(this.options.onFinish))
 							this.options.onFinish();
 						return;
 					}
@@ -238,9 +249,17 @@ window.Animation = (function() {
 
 			render: function(pos) {
 				position = this.options.transition(pos);
-				if (typeof this.update === 'function')
+				if (isFn(this.update)) {
+					if (isFn(this.options.onBeforeUpdate))
+						this.options.onBeforeUpdate();
+					
 					this.update(position);
-				else
+					
+					if (isFn(this.options.onAfterUpdate))
+						this.options.onAfterUpdate();
+					else if (isFn(this.options.onUpdate))
+						this.options.onUpdate();
+				} else
 					this.cancel();
 			},
 

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>Animation.js</title>
+	<style type="text/css">
+		#square {
+			background: #e55;
+			border: 1px solid #900;
+			display: block;
+			position: absolute;
+			width: 100px;
+			height: 100px;
+			box-shadow: 5px 5px 10px black;
+			font-size: 16px;
+			line-height: 100px;
+			text-align: center;
+			font-family: "Lucida Grande", Helvetica, Arial, sans-serif;
+		}
+	</style>
+	<script type="text/javascript" src="../Animation.js"></script>
+	<script type="text/javascript" src="rotate.js"></script>
+</head>
+
+<body>
+	<a href="index.html">back</a>
+	<a id="square" onclick="rotate()">CLICK ME!</a>
+	<script type="text/javascript">
+		function rotate() {
+			Animation.cancelAll();
+			var animation = new Rotate(document.getElementById('square'), {
+				x: Math.random()*(window.innerWidth - 100) + 50,
+				y: Math.random()*(window.innerHeight - 100) + 50,
+				a: Math.random()*1076, //degrees
+				duration: 0.5 + 1*Math.random()
+			});
+		}
+	</script>
+</body>
+</html>
+	
