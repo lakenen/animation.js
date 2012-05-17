@@ -25,14 +25,20 @@
 <body>
 	<a href="index.html">back</a>
 	<a id="square" onclick="rotate()">CLICK ME!</a>
+	<div id="transition"></div>
 	<script type="text/javascript">
 		function rotate() {
 			Animation.cancelAll();
+			var t = Animation.Transitions.Random();
+			var d =  Math.round((0.5 + 2*Math.random())*10)/10;
+			var div = document.getElementById('transition');
+			div.innerHTML = 'Transition: '+t.Name + '<br/>Duration: '+d+'s';
 			var animation = new Rotate(document.getElementById('square'), {
-				x: Math.random()*(window.innerWidth - 100) + 50,
-				y: Math.random()*(window.innerHeight - 100) + 50,
+				x: Math.random()*(window.innerWidth - 150) + 50,
+				y: Math.random()*(window.innerHeight - 150) + 50,
 				a: Math.random()*1076, //degrees
-				duration: 0.5 + 1*Math.random()
+				duration: d,
+				transition: t
 			});
 		}
 	</script>

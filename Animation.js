@@ -1,7 +1,7 @@
 /*!
 
 	Animation.js
-	Version 2.0
+	Version 2.1.0
 	Copyright 2012 Cameron Lakenen
 	
 	Permission is hereby granted, free of charge, to any person obtaining
@@ -28,7 +28,11 @@
  *
  * Changelog:
  * 
- * Version 2.0
+ * Version 2.1.0
+ * - Added Name property to transitions
+ * - Added Transitions.Random()
+ * 
+ * Version 2.0.0
  * - Added support for requestAnimationFrame and cancel[Request]AnimationFrame
  * 
 **/
@@ -137,20 +141,26 @@ window.Animation = (function() {
 			animations[i] && animations[i].loop && animations[i].loop(time);
 	}
 
-	function buildTransition(transition) {
-		transition.easeIn = function(p) {
+	function buildTransition(transition, name) {
+		transition.EaseIn = function(p) {
 			return 1 - transition(1 - p);
 		};
-		transition.easeOut = transition;
+		transition.EaseOut = transition;
+		transition.EaseIn.Name = name + ' (Ease In)';
+		transition.EaseOut.Name = name + ' (Ease Out)';
 		return transition;
 	}
 	
 	function isFn(fn) {
 		return typeof fn === 'function';
 	}
-
+	var allTransitions = [];
 	var Animation = {
-		Transitions: {},
+		Transitions: {
+			Random: function () {
+				return allTransitions[Math.floor(Math.random() * allTransitions.length)];
+			}
+		},
 
 		cancelAll: function() {
 			for ( var a in animations)
@@ -162,7 +172,9 @@ window.Animation = (function() {
 		addTransitions: function(transitions) {
 			for ( var t in transitions) {
 				var transition = transitions[t];
-				this.Transitions[t] = buildTransition(transition);
+				this.Transitions[t] = buildTransition(transition, t);
+				allTransitions.push(this.Transitions[t].EaseIn);
+				allTransitions.push(this.Transitions[t].EaseOut);
 			}
 		},
 

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>Animation.js</title>
+	<style type="text/css">
+		button {
+			display: inline-block;
+			width: 30px;
+			height: 30px;
+		}
+	</style>
+	<script type="text/javascript" src="../Animation.js"></script>
+	<script type="text/javascript" src="colors.js"></script>
+</head>
+
+<body>
+	<a href="index.html">back</a>
+	<div>
+		<button style="background:red" onclick="colorize(this)"></button>
+		<button style="background:blue" onclick="colorize(this)"></button>
+		<button style="background:yellow" onclick="colorize(this)"></button>
+		<button style="background:green" onclick="colorize(this)"></button>
+		<button style="background:black" onclick="colorize(this)"></button>
+		<button style="background:white" onclick="colorize(this)"></button>
+	</div>
+	<script type="text/javascript">
+		function colorize(elt) {
+			Animation.cancelAll();
+			var animation = new Colors(document.body, {
+				to: elt,
+				duration: 1.5 + 1*Math.random()
+			});
+		}
+	</script>
+</body>
+</html>
+	
