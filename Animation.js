@@ -287,6 +287,8 @@ window.Animation = (function() {
 			},
 
 			cancel: function() {
+				if (isFn(this.options.onStop))
+					this.options.onStop();
 				remove(this);
 			},
 			
