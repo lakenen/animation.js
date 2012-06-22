@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>Animation.js</title>
+	<style type="text/css">
+		canvas {
+			border: 1px solid black;
+		}
+	</style>
+	<script type="text/javascript" src="../Animation.js"></script>
+	<script type="text/javascript" src="canvas.js"></script>
+</head>
+
+<body>
+	<a href="index.html">back</a>
+	<h1>Animating objects on a Canvas element - Animation.js</h1>
+	<canvas id="canvas" width="800" height="600"></canvas>
+	<script type="text/javascript">
+		var canv = new Canvas(document.getElementById('canvas'));
+		var dot = new Dot(10);
+		canv.add(dot);
+		
+		(function animate() {
+			var anim = new Animation.Transform(dot, {
+				to: {
+					x: canv.width*Math.random(),
+					y: canv.height*Math.random(),
+					radius: 50*Math.random() + 10
+				},
+				duration: 2*Math.random(),
+				transition: Animation.Transitions.Random(),
+				onFinish: animate
+			});
+		})();
+	</script>
+</body>
+</html>
+	
