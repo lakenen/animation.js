@@ -2,6 +2,9 @@
 
 A JavaScript animation library for easily creating complex, customizable animations.
 
+[Demo](http://lakenen.com/animation)
+
+
 ## How to use
 
 You can use Animation.Transform if you just want to animate properties on an object:
@@ -95,11 +98,62 @@ var animation = new MyAnimation(document.getElementById('square'), {
 
 ```
 
+## API Docs
+
+### Extending
+
+When extending Animation, you need to pass in a constructor function. 
+The constructor must call this._super(options), and must return an object with at least one property: update, 
+which is a function that takes a position (ratio complete) parameter and applies that to animate whatever you want to animate.
+
+Here's a very basic example.
+
+```js
+// defining the new animation class
+var MoveX = Animation.extend(function (element, options) {
+	this._super(options);
+	return {
+		update: function (pos) {
+			element.style.left = (((options.to - options.from) * pos) + options.from) + 'px';
+		}
+	}
+});
+```
+
+### Animating
+
+When you want to use this new animation, you can create new instances of it.
+
+```js
+var element = document.getElementById('example');
+element.style.position = 'absolute';
+var anim = new MoveX(element, {
+	from: 0,
+	to: 500,
+	duration: 3,
+	transition: Animation.Transitions.Elastic.EaseIn,
+	onFinish: function () {
+		alert('finished!');
+	},
+	onStop: function () {
+		alert('stopped!');
+	}
+});
+
+// stop the animation where it is (calls options.onStop if exists)
+anim.cancel();
+
+// complete the animation now--jump to the last frame (calls options.onFinish and options.onStop)
+anim.finish();
+
+// also available
+Animation.cancelAll();
+Animation.finishAll();
+```
+
 ## Coming soon...
 
 Tests and more examples!
-
-Oh... and I guess I'll post full API documentation too! :)
 
 ## License 
 
