@@ -1,7 +1,7 @@
 /*!
 
 	Animation.js
-	Version 2.1.0
+	Version 2.2.0
 	Copyright 2012 Cameron Lakenen
 	
 	Permission is hereby granted, free of charge, to any person obtaining
@@ -27,6 +27,10 @@
 /**
  *
  * Changelog:
+ * 
+ * Version 2.2.0
+ * - Added Animation.finishAll()
+ * - Added options.onStop()
  * 
  * Version 2.1.0
  * - Added Name property to transitions
@@ -137,8 +141,9 @@ window.Animation = (function() {
 	function loop() {
 		frame_id = requestAnimationFrame(loop);
 		var time = (new Date()).getTime();
-		for ( var i = 0, len = animations.length; i < len; i++)
+		for ( var i = 0, len = animations.length; i < len; i++) {
 			animations[i] && animations[i].loop && animations[i].loop(time);
+		}
 	}
 
 	function buildTransition(transition, name) {
@@ -163,10 +168,17 @@ window.Animation = (function() {
 		},
 
 		cancelAll: function() {
-			for ( var a in animations)
+			for (var a in animations) {
 				animations[a].cancel();
+			}
 			animations = [];
 			stopAnimations();
+		},
+		
+		finishAll: function() {
+			for (var a in animations) {
+				animations[a].finish();
+			}
 		},
 
 		addTransitions: function(transitions) {
@@ -276,6 +288,8 @@ window.Animation = (function() {
 			},
 
 			cancel: function() {
+				if (isFn(this.options.onStop))
+					this.options.onStop();
 				remove(this);
 			},
 			
