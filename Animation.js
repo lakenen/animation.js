@@ -27,18 +27,18 @@
 /**
  *
  * Changelog:
- * 
+ *
  * Version 2.2.0
  * - Added Animation.finishAll()
  * - Added options.onStop()
- * 
+ *
  * Version 2.1.0
  * - Added Name property to transitions
  * - Added Transitions.Random()
- * 
+ *
  * Version 2.0.0
  * - Added support for requestAnimationFrame and cancel[Request]AnimationFrame
- * 
+ *
 **/
 
 // requestAnimationFrame polyfill by Erik Mšller
@@ -47,17 +47,16 @@
 	var lastTime = 0;
 	var vendors = ['ms', 'moz', 'webkit', 'o'];
 	for(var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
-		window.requestAnimationFrame = window[vendors[x]+'RequestAnimationFrame'];
-		window.cancelAnimationFrame = window[vendors[x]+'CancelAnimationFrame'] 
-								   || window[vendors[x]+'CancelRequestAnimationFrame'];
+		window.requestAnimationFrame =	window[vendors[x]+'RequestAnimationFrame'];
+		window.cancelAnimationFrame  =	window[vendors[x]+'CancelAnimationFrame'] ||
+										window[vendors[x]+'CancelRequestAnimationFrame'];
 	}
  
 	if (!window.requestAnimationFrame) {
 		window.requestAnimationFrame = function(callback, element) {
 			var currTime = new Date().getTime();
 			var timeToCall = Math.max(0, 16 - (currTime - lastTime));
-			var id = window.setTimeout(function() { callback(currTime + timeToCall); }, 
-			  timeToCall);
+			var id = window.setTimeout(function() { callback(currTime + timeToCall); }, timeToCall);
 			lastTime = currTime + timeToCall;
 			return id;
 		};
@@ -82,17 +81,21 @@ window.Animation = (function() {
 		var k = this;
 		var c = function() {
 			this._super = k;
-			var pubs = constructor.apply(this, arguments), self = this;
+			var pubs = constructor.apply(this, arguments),
+				self = this,
+				key,
+				b = function(key, fn, sfn) {
+					self[key] = typeof fn != "function" ||
+								typeof sfn != "function" ?
+								fn : function() {
+									this._super = sfn;
+									return fn.apply(this, arguments);
+								};
+				};
 			for (key in pubs)
-				(function(fn, sfn) {
-					self[key] = typeof fn != "function"
-							|| typeof sfn != "function" ? fn: function() {
-						this._super = sfn;
-						return fn.apply(this, arguments);
-					};
-				})(pubs[key], self[key]);
+				b(key, pubs[key], self[key]);
 		};
-		c.prototype = new this;
+		c.prototype = new k();
 		c.prototype.constructor = c;
 		c.extend = this.extend || this.create;
 		return c;
@@ -123,7 +126,7 @@ window.Animation = (function() {
 				break;
 			}
 		}
-		if (animations.length == 0) {
+		if (animations.length === 0) {
 			stopAnimations();
 		}
 	}
@@ -142,7 +145,7 @@ window.Animation = (function() {
 		frame_id = requestAnimationFrame(loop);
 		var time = (new Date()).getTime();
 		for ( var i = 0, len = animations.length; i < len; i++) {
-			animations[i] && animations[i].loop && animations[i].loop(time);
+			if (animations[i] && animations[i].loop) animations[i].loop(time);
 		}
 	}
 
@@ -312,12 +315,12 @@ window.Animation = (function() {
 				function _update(obj, from, to, pos) {
 					for ( var attr in to) {
 						if (from.hasOwnProperty(attr)) {
-							if (typeof to[attr] === 'object'
-									&& typeof from[attr] === 'object') {
+							if (typeof to[attr] === 'object' &&
+								typeof from[attr] === 'object')
+							{
 								_update(obj[attr], from[attr], to[attr], pos);
 							} else if (typeof to[attr] === 'number') {
-								obj[attr] = ((to[attr] - from[attr]) * pos)
-										+ from[attr];
+								obj[attr] = ((to[attr] - from[attr]) * pos) + from[attr];
 							}
 						}
 					}
