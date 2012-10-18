@@ -8,7 +8,7 @@
 			border: 1px solid black;
 		}
 	</style>
-	<script type="text/javascript" src="../Animation.js"></script>
+	<script type="text/javascript" src="Animation.js"></script>
 	<script type="text/javascript" src="canvas.js"></script>
 </head>
 
@@ -22,7 +22,7 @@
 		var canv = new Canvas(document.getElementById('canvas'));
 		var dot = new Dot(10);
 		canv.add(dot);
-		
+
 		(function animate() {
 			var anim = new Animation.Transform(dot, {
 				to: {
@@ -38,4 +38,4 @@
 	</script>
 </body>
 </html>
-	
+
