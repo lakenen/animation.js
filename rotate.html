@@ -17,6 +17,19 @@
 			text-align: center;
 			font-family: "Lucida Grande", Helvetica, Arial, sans-serif;
 		}
+
+		body{
+			color:#444;
+			font-family: Verdana, Arial, sans-serif;
+			font-size:12px;
+			line-height:1.5em;
+			width: 75em;
+			margin: 10px auto;
+			padding: 1em;
+		}
+		h1 {
+			font-weight: 300;
+		}
 	</style>
 	<script type="text/javascript" src="Animation.js"></script>
 	<script type="text/javascript" src="rotate.js"></script>
@@ -36,9 +49,10 @@
 			var d =  Math.round((0.5 + 2*Math.random())*10)/10;
 			var div = document.getElementById('transition');
 			div.innerHTML = 'Transition: '+t.Name + '<br/>Duration: '+d+'s';
+			var rect = document.body.getBoundingClientRect();
 			var animation = new Rotate(document.getElementById('square'), {
-				x: Math.random()*(window.innerWidth - 150) + 50,
-				y: Math.random()*(window.innerHeight - 150) + 50,
+				x: Math.random()*(window.innerWidth - rect.left - 150) + 50,
+				y: Math.random()*(window.innerHeight - rect.top - 150) + 50,
 				a: Math.random()*1076, //degrees
 				duration: d,
 				transition: t
