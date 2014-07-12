@@ -2,7 +2,7 @@
 
 A JavaScript animation library for easily creating complex, customizable animations.
 
-[Demo](http://lakenen.com/animation)
+[Demo](http://lakenen.com/old/animation)
 
 
 ## How to use
@@ -159,7 +159,7 @@ Tests and more examples!
 
 (The MIT License)
 
-Copyright 2012 Cameron Lakenen
+Copyright 2014 Cameron Lakenen
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
